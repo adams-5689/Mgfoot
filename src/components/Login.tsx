@@ -8,7 +8,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useToast } from "../components/ui/use-toast";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom"; // Remplacement de useRouter
 
 interface LoginProps {
   setUserRole: (role: string) => void;
@@ -18,7 +18,7 @@ export default function Login({ setUserRole }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate(); // Utilisation de useNavigate
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -40,7 +40,7 @@ export default function Login({ setUserRole }: LoginProps) {
           title: "Connexion réussie",
           description: `Bienvenue, vous êtes connecté en tant que ${userData.role}.`,
         });
-        router.push("/");
+        navigate("/"); // Redirection après connexion
       } else {
         throw new Error("Utilisateur non trouvé dans la base de données.");
       }

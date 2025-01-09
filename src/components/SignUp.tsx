@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
@@ -15,7 +16,6 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { toast } from "../components/ui/use-toast";
-import { useRouter } from "next/router";
 
 interface SignUpProps {
   setUserRole: (role: string) => void;
@@ -26,7 +26,7 @@ const SignUp: React.FC<SignUpProps> = ({ setUserRole }) => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +49,7 @@ const SignUp: React.FC<SignUpProps> = ({ setUserRole }) => {
         title: "Compte créé",
         description: "Votre compte a été créé avec succès.",
       });
-      router.push("/");
+      navigate("/"); // Remplace router.push par navigate
     } catch (error: any) {
       console.error(error);
       toast({

@@ -6,7 +6,7 @@ import { SeasonProvider } from "./contexts/SeasonContext";
 import Navigation from "./components/Navigation";
 import SeasonSelector from "./components/SeasonSelector";
 import Auth from "./components/Auth";
-import { Toaster } from "./components/ui/toast";
+// import { Toaster } from "/components/ui/toast";
 import { ToastProvider } from "./components/ui/toast";
 
 const App: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -39,7 +39,7 @@ const App: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
       <ToastProvider>
         <Auth setUserRole={setUserRole} />
-        <Toaster />
+        {/* <Toaster /> */}
       </ToastProvider>
     );
   }
@@ -69,7 +69,7 @@ const App: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </main>
           </div>
         </div>
-        <Toaster />
+        {/* <Toaster /> */}
       </SeasonProvider>
     </ToastProvider>
   );
