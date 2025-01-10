@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home,
@@ -6,7 +5,7 @@ import {
   Shield,
   Calendar,
   CurrencyIcon as Exchange,
-  BarChartIcon as ChartBar,
+  BarChart2,
   Settings,
   LogOut,
 } from "lucide-react";
@@ -15,12 +14,12 @@ import { toast } from "../components/ui/use-toast";
 
 interface NavLinkProps {
   to: string;
-  children: React.ReactNode;
   roles?: string[];
   userRole: string;
+  children: React.ReactNode;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, children, roles, userRole }) => {
+const NavLink = ({ to, children, roles, userRole }: NavLinkProps) => {
   const location = useLocation();
   const isActive = location.pathname === to;
 
@@ -64,41 +63,45 @@ const Navigation: React.FC<NavigationProps> = ({ userRole }) => {
 
   return (
     <nav className="bg-gray-800 w-64 min-h-screen px-4 py-6">
-      <ul className="space-y-2">
+      <div className="space-y-2">
         <NavLink to="/" userRole={userRole}>
-          <Home className="mr-3" size={20} />
+          <Home className="h-4 w-4 mr-2" />
           Tableau de bord
         </NavLink>
         <NavLink to="/players" userRole={userRole} roles={["admin", "coach"]}>
-          <Users className="mr-3" size={20} />
+          <Users className="h-4 w-4 mr-2" />
           Joueurs
         </NavLink>
         <NavLink to="/teams" userRole={userRole} roles={["admin", "coach"]}>
-          <Shield className="mr-3" size={20} />
+          <Shield className="h-4 w-4 mr-2" />
           Équipes
         </NavLink>
         <NavLink to="/matches" userRole={userRole}>
-          <Calendar className="mr-3" size={20} />
+          <Calendar className="h-4 w-4 mr-2" />
           Matchs
         </NavLink>
         <NavLink to="/transfers" userRole={userRole} roles={["admin"]}>
-          <Exchange className="mr-3" size={20} />
+          <Exchange className="h-4 w-4 mr-2" />
           Transferts
         </NavLink>
-        <NavLink to="/performance" userRole={userRole} roles={["admin", "coach"]}>
-          <ChartBar className="mr-3" size={20} />
+        <NavLink
+          to="/performance"
+          userRole={userRole}
+          roles={["admin", "coach"]}
+        >
+          <BarChart2 className="h-4 w-4 mr-2" />
           Performances
         </NavLink>
         <NavLink to="/admin" userRole={userRole} roles={["admin"]}>
-          <Settings className="mr-3" size={20} />
+          <Settings className="h-4 w-4 mr-2" />
           Administration
         </NavLink>
-      </ul>
+      </div>
       <button
         onClick={handleLogout}
-        className="flex items-center text-white py-2 px-4 rounded hover:bg-gray-700 mt-4"
+        className="flex items-center text-white py-2 px-4 rounded hover:bg-gray-700 mt-4 w-full"
       >
-        <LogOut className="mr-3" size={20} />
+        <LogOut className="h-4 w-4 mr-2" />
         Déconnexion
       </button>
     </nav>

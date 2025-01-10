@@ -1,11 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Select } from "../components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
+import React, { useState, useEffect } from "react";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../config/firebase";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Select } from "../components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 
 interface Match {
   id: string;
@@ -42,10 +56,10 @@ const MatchManagement: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [seasons, setSeasons] = useState<Season[]>([]);
-  const [newMatchDate, setNewMatchDate] = useState('');
-  const [selectedHomeTeam, setSelectedHomeTeam] = useState('');
-  const [selectedAwayTeam, setSelectedAwayTeam] = useState('');
-  const [selectedSeason, setSelectedSeason] = useState('');
+  const [newMatchDate, setNewMatchDate] = useState("");
+  const [selectedHomeTeam, setSelectedHomeTeam] = useState("");
+  const [selectedAwayTeam, setSelectedAwayTeam] = useState("");
+  const [selectedSeason, setSelectedSeason] = useState("");
   const [homeTeamStarters, setHomeTeamStarters] = useState<string[]>([]);
   const [homeTeamSubstitutes, setHomeTeamSubstitutes] = useState<string[]>([]);
   const [awayTeamStarters, setAwayTeamStarters] = useState<string[]>([]);
@@ -58,7 +72,7 @@ const MatchManagement: React.FC = () => {
   }, []);
 
   const fetchMatches = async () => {
-    const querySnapshot = await getDocs(collection(db, 'matches'));
+    const querySnapshot = await getDocs(collection(db, "matches"));
     const fetchedMatches: Match[] = [];
     querySnapshot.forEach((doc) => {
       fetchedMatches.push({ id: doc.id, ...doc.data() } as Match);
@@ -67,8 +81,7 @@ const MatchManagement: React.FC = () => {
   };
 
   const fetchTeams = async () => {
-    constfetchTeams = async () => {
-    const querySnapshot = await getDocs(collection(db, 'teams'));
+    const querySnapshot = await getDocs(collection(db, "teams"));
     const fetchedTeams: Team[] = [];
     querySnapshot.forEach((doc) => {
       fetchedTeams.push({ id: doc.id, ...doc.data() } as Team);
@@ -77,7 +90,7 @@ const MatchManagement: React.FC = () => {
   };
 
   const fetchSeasons = async () => {
-    const querySnapshot = await getDocs(collection(db, 'seasons'));
+    const querySnapshot = await getDocs(collection(db, "seasons"));
     const fetchedSeasons: Season[] = [];
     querySnapshot.forEach((doc) => {
       fetchedSeasons.push({ id: doc.id, ...doc.data() } as Season);
@@ -87,7 +100,7 @@ const MatchManagement: React.FC = () => {
 
   const handleAddMatch = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addDoc(collection(db, 'matches'), {
+    await addDoc(collection(db, "matches"), {
       date: newMatchDate,
       homeTeamId: selectedHomeTeam,
       awayTeamId: selectedAwayTeam,
@@ -101,10 +114,10 @@ const MatchManagement: React.FC = () => {
       },
       seasonId: selectedSeason,
     });
-    setNewMatchDate('');
-    setSelectedHomeTeam('');
-    setSelectedAwayTeam('');
-    setSelectedSeason('');
+    setNewMatchDate("");
+    setSelectedHomeTeam("");
+    setSelectedAwayTeam("");
+    setSelectedSeason("");
     setHomeTeamStarters([]);
     setHomeTeamSubstitutes([]);
     setAwayTeamStarters([]);
@@ -113,7 +126,7 @@ const MatchManagement: React.FC = () => {
   };
 
   const handleDeleteMatch = async (id: string) => {
-    await deleteDoc(doc(db, 'matches', id));
+    await deleteDoc(doc(db, "matches", id));
     fetchMatches();
   };
 
@@ -141,7 +154,9 @@ const MatchManagement: React.FC = () => {
           >
             <option value="">Sélectionner une saison</option>
             {seasons.map((season) => (
-              <option key={season.id} value={season.id}>{season.name}</option>
+              <option key={season.id} value={season.id}>
+                {season.name}
+              </option>
             ))}
           </Select>
         </div>
@@ -152,7 +167,7 @@ const MatchManagement: React.FC = () => {
             value={selectedHomeTeam}
             onChange={(e) => {
               setSelectedHomeTeam(e.target.value);
-              const team = teams.find(t => t.id === e.target.value);
+              const team = teams.find((t) => t.id === e.target.value);
               if (team) {
                 setHomeTeamStarters(team.players.starters);
                 setHomeTeamSubstitutes(team.players.substitutes);
@@ -161,9 +176,13 @@ const MatchManagement: React.FC = () => {
             required
           >
             <option value="">Sélectionner une équipe</option>
-            {teams.filter(team => team.seasonId === selectedSeason).map((team) => (
-              <option key={team.id} value={team.id}>{team.name}</option>
-            ))}
+            {teams
+              .filter((team) => team.seasonId === selectedSeason)
+              .map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.name}
+                </option>
+              ))}
           </Select>
         </div>
         <div>
@@ -173,7 +192,7 @@ const MatchManagement: React.FC = () => {
             value={selectedAwayTeam}
             onChange={(e) => {
               setSelectedAwayTeam(e.target.value);
-              const team = teams.find(t => t.id === e.target.value);
+              const team = teams.find((t) => t.id === e.target.value);
               if (team) {
                 setAwayTeamStarters(team.players.starters);
                 setAwayTeamSubstitutes(team.players.substitutes);
@@ -182,9 +201,17 @@ const MatchManagement: React.FC = () => {
             required
           >
             <option value="">Sélectionner une équipe</option>
-            {teams.filter(team => team.seasonId === selectedSeason && team.id !== selectedHomeTeam).map((team) => (
-              <option key={team.id} value={team.id}>{team.name}</option>
-            ))}
+            {teams
+              .filter(
+                (team) =>
+                  team.seasonId === selectedSeason &&
+                  team.id !== selectedHomeTeam
+              )
+              .map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.name}
+                </option>
+              ))}
           </Select>
         </div>
         <Button type="submit">Ajouter un match</Button>
@@ -203,11 +230,22 @@ const MatchManagement: React.FC = () => {
           {matches.map((match) => (
             <TableRow key={match.id}>
               <TableCell>{new Date(match.date).toLocaleDateString()}</TableCell>
-              <TableCell>{seasons.find(s => s.id === match.seasonId)?.name}</TableCell>
-              <TableCell>{teams.find(t => t.id === match.homeTeamId)?.name}</TableCell>
-              <TableCell>{teams.find(t => t.id === match.awayTeamId)?.name}</TableCell>
               <TableCell>
-                <Button variant="destructive" onClick={() => handleDeleteMatch(match.id)}>Supprimer</Button>
+                {seasons.find((s) => s.id === match.seasonId)?.name}
+              </TableCell>
+              <TableCell>
+                {teams.find((t) => t.id === match.homeTeamId)?.name}
+              </TableCell>
+              <TableCell>
+                {teams.find((t) => t.id === match.awayTeamId)?.name}
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="destructive"
+                  onClick={() => handleDeleteMatch(match.id)}
+                >
+                  Supprimer
+                </Button>
               </TableCell>
             </TableRow>
           ))}
@@ -218,4 +256,3 @@ const MatchManagement: React.FC = () => {
 };
 
 export default MatchManagement;
-
